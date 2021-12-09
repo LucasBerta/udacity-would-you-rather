@@ -9,6 +9,7 @@ import Home from './Home';
 import Leaderboard from './Leaderboard';
 import Login from './Login';
 import NewQuestion from './NewQuestion';
+import NotFound from './NotFound';
 import Poll from './Poll';
 
 const Routing = () => {
@@ -21,6 +22,7 @@ const Routing = () => {
     { path: '/add', element: <NewQuestion /> },
     { path: '/leaderboard', element: <Leaderboard /> },
     { path: '/login', element: <Login /> },
+    { path: '*', element: <NotFound /> },
   ]);
   return Routes;
 }

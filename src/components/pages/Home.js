@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Outlet, useLocation } from "react-router";
-import { POLL_NOT_FOUND } from "../../util/reason";
 import { QuestionList } from "../Questions";
 
 const centerContentProps = {
@@ -34,15 +33,17 @@ function Home({ loggedUser, questions }) {
   const [cameFromNoPollFound, setCameFromNoPollFound] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [showError, setShowError] = useState(false);
+  const [reason, setReason] = useState({});
 
   const { unansweredQuestions, answeredQuestions } = getSplitQuestions(loggedUser, questions);
   const questionsToShow = activeTab === 0 ? unansweredQuestions : answeredQuestions;
 
   useEffect(() => {
     function setUp() {
-      if (location.state?.reason === POLL_NOT_FOUND) {
+      if (!!location.state?.reason) {
         setCameFromNoPollFound(true);
         setShowError(true);
+        setReason(location.state.reason);
       }
     }
     setUp();
@@ -66,7 +67,7 @@ function Home({ loggedUser, questions }) {
           onClose={hideError}
         >
           <Alert severity="error" variant="filled">
-            The poll you tried to access doesn't exist.
+            {reason.text}
           </Alert>
         </Snackbar>
       }
