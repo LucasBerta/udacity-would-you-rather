@@ -1,0 +1,1 @@
+export const POLL_NOT_FOUND = 'POLL_NOT_FOUND';
