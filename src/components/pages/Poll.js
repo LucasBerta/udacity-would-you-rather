@@ -50,8 +50,7 @@ const PollCard = connect(mapStateToPollCardProps)(({ question, option, isAnswere
   );
 });
 
-const Poll = ({ dispatch, loggedUser, users, questions }) => {
-
+const Poll = ({ dispatch, loggedUser, users, questions, loading }) => {
   const [show, setShow] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -73,7 +72,9 @@ const Poll = ({ dispatch, loggedUser, users, questions }) => {
   if (!question) return <div></div>;
 
   function handleClosePoll(a, b) {
-    navigate('/');
+    if (!loading) {
+      navigate('/');
+    }
   }
 
   async function handleOnVote(option) {
@@ -86,7 +87,6 @@ const Poll = ({ dispatch, loggedUser, users, questions }) => {
   return (
     <Grow in={show}>
       <Modal
-        keepMounted
         open={true}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -118,10 +118,11 @@ const Poll = ({ dispatch, loggedUser, users, questions }) => {
   );
 };
 
-const mapStateToProps = ({ loggedUser, users, questions }) => ({
+const mapStateToProps = ({ loggedUser, users, questions, loadingBar }) => ({
   loggedUser,
   users,
   questions,
+  loading: !!loadingBar.default,
 });
 
 export default connect(mapStateToProps)(Poll);
